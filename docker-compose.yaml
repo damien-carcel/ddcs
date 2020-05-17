@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  node:
+    environment:
+      CLIENT_PORT: '${CLIENT_PORT:-8080}'
+      YARN_CACHE_FOLDER: '/home/yarn-cache'
+    expose:
+      - '${CLIENT_PORT:-8080}'
+    image: 'node:slim'
+    networks:
+      - ddcs
+    ports:
+      - '${CLIENT_PORT:-8080}:${CLIENT_PORT:-8080}'
+    user: '${HOST_USER_IDS:-1000:1000}'
+    volumes:
+      - './:/srv/app'
+      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/yarn-cache'
+      - '${HOST_YARN_CONFIG_FOLDER:-~/.yarn}:/.yarn'
+      - '${HOST_YARN_CONFIG_FILE:-~/.yarnrc}:/.yarnrc'
+    working_dir: '/srv/app'
+
+  prod:
+    build:
+      context: './'
+      target: 'prod'
+    image: 'carcel/dd/prod:latest'
+    labels:
+      - 'traefik.http.middlewares.redirect-ddcs-http-to-https.redirectScheme.scheme=https'
+      - 'traefik.http.routers.ddcs.entrypoints=web'
+      - 'traefik.http.routers.ddcs.middlewares=redirect-ddcs-http-to-https'
+      - 'traefik.http.routers.ddcs.rule=Host(`ddcs.docker.localhost`)'
+      - 'traefik.http.routers.ddcs-with-https.entrypoints=websecure'
+      - 'traefik.http.routers.ddcs-with-https.rule=Host(`ddcs.docker.localhost`)'
+      - 'traefik.http.routers.ddcs-with-https.tls=true'
+    networks:
+      - proxy
+      - ddcs
+
+networks:
+  proxy:
+    external: true
+  ddcs:
