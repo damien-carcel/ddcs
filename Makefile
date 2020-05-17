@@ -38,6 +38,10 @@ down:
 
 # Test the app
 
+.PHONY: stylelint
+stylelint:
+	docker-compose run --rm node yarn run stylelint
+
 .PHONY: eslint
 eslint:
 	docker-compose run --rm node yarn run lint -f junit -o tests/results/eslint.xml
@@ -56,6 +60,7 @@ unit-tests:
 
 .PHONY: tests
 tests: node_modules
+	$(MAKE) stylelint
 	$(MAKE) eslint
 	$(MAKE) type-check
 	$(MAKE) unit-tests
