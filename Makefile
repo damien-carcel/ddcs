@@ -35,12 +35,12 @@ node_modules: yarn.lock
 
 # Serve the applications
 
-.PHONY: serve
-serve: node_modules
+.PHONY: dev
+dev: node_modules
 	docker-compose run --rm --service-ports node yarn serve
 
-.PHONY: install
-install: build-prod
+.PHONY: prod
+prod: build-prod
 	docker-compose up -d prod
 
 # Clean the containers

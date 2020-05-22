@@ -1,29 +1,30 @@
-# donjon-et-dragon
+# ddcs - A Dongeon and Dragon character sheet
+
+The advancement of the project can be followed [here](https://github.com/damien-carcel/ddcs/projects/1).
 
 ## Project setup
-```
-yarn install
+```bash
+$ make node_modules
 ```
 
 ### Compiles and hot-reloads for development
-```
-yarn serve
+
+```bash
+$ make dev
 ```
 
 ### Compiles and minifies for production
-```
-yarn build
+
+```bash
+$ make prod
 ```
 
-### Run your unit tests
-```
-yarn test:unit
-```
+### Run the tests
 
-### Lints and fixes files
-```
-yarn lint
+```bash
+$ make tests
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
