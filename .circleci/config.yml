@@ -1,0 +1,86 @@
+version: 2.1
+
+# Aliases
+
+executor-config: &executor-config
+    machine:
+        image: ubuntu-1604:202004-01
+    environment:
+        COMPOSE_DOCKER_CLI_BUILD: 1
+        DOCKER_BUILDKIT: 1
+        HOST_USER_IDS: "1001:1002"
+
+# -----
+
+commands:
+    proxy-network:
+        description: Create "proxy" Docker network (ignore if it already exists)
+        steps:
+            - run:
+                name: Create "proxy" Docker network (ignore if it already exists)
+                command: docker network create proxy || true
+
+# -----
+
+jobs:
+    tests:
+        <<: *executor-config
+        steps:
+            - checkout
+            - proxy-network
+            - run:
+                name: Create cache and configuration directories for the client dependencies
+                command: |
+                    touch ~/.yarnrc
+                    mkdir ~/.yarn
+                    mkdir -p ~/.cache/yarn
+            - restore_cache:
+                keys:
+                    - yarn-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+                    - yarn-{{ .Environment.CACHE_VERSION }}-
+            - run:
+                name: Install dependencies
+                command: make node_modules
+            - save_cache:
+                key: yarn-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
+                paths:
+                    - ~/.cache/yarn
+            - run:
+                name: Create report directory
+                command: mkdir reports
+            - run:
+                name: Lint CSS/LESS code
+                command: make stylelint SL_OUT="--custom-formatter 'node_modules/stylelint-junit-formatter' > reports/stylelint.xml"
+            - run:
+                name: Lint JavaScript/TypeScript code
+                command: make eslint ESL_OUT="-f junit -o reports/eslint.xml"
+            - run:
+                name: Run TS type checking
+                command: make type-check
+            - run:
+                name: Run unit tests
+                command: make unit-tests JEST_OUT="--ci --reporters=default --reporters=jest-junit"
+            - store_test_results:
+                path: reports
+            - store_artifacts:
+                path: reports
+
+workflows:
+    version: 2
+    pull_request:
+        jobs:
+            - tests:
+                filters:
+                    branches:
+                        ignore:
+                            - master
+    weekly:
+        triggers:
+            - schedule:
+                cron: "0 0 * * 1"
+                filters:
+                    branches:
+                        only:
+                            - master
+        jobs:
+            - tests
