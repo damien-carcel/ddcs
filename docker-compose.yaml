@@ -34,10 +34,10 @@ services:
       - 'traefik.http.routers.ddcs-with-https.rule=Host(`ddcs.docker.localhost`)'
       - 'traefik.http.routers.ddcs-with-https.tls=true'
     networks:
-      - proxy
       - ddcs
+      - proxy
 
 networks:
+  ddcs:
   proxy:
     external: true
-  ddcs:
