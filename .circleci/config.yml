@@ -50,16 +50,16 @@ jobs:
                 command: mkdir reports
             - run:
                 name: Lint CSS/LESS code
-                command: make stylelint SL_OUT="--custom-formatter 'node_modules/stylelint-junit-formatter' > reports/stylelint.xml"
+                command: make stylelint O="--custom-formatter 'node_modules/stylelint-junit-formatter' > reports/stylelint.xml"
             - run:
                 name: Lint JavaScript/TypeScript code
-                command: make eslint ESL_OUT="-f junit -o reports/eslint.xml"
+                command: make eslint O="--no-fix -f junit > reports/eslint.xml"
             - run:
                 name: Run TS type checking
                 command: make type-check
             - run:
                 name: Run unit tests
-                command: make unit-tests JEST_OUT="--ci --reporters=default --reporters=jest-junit"
+                command: make unit-tests O="--ci --reporters=default --reporters=jest-junit"
             - store_test_results:
                 path: reports
             - store_artifacts:

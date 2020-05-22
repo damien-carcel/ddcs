@@ -2,14 +2,7 @@ SHELL = bash
 
 # Environment Variables
 
-ESL_OUT ?=
-JEST_OUT ?=
-SL_OUT ?=
-
-SILENT =
-ifneq (${SL_OUT},)
-SILENT = -s
-endif
+O ?=
 
 # Build Docker images
 
@@ -53,15 +46,11 @@ down:
 
 .PHONY: stylelint
 stylelint:
-	docker-compose run --rm node yarn run ${SILENT} stylelint ${SL_OUT}
+	docker-compose run --rm node yarn run -s stylelint ${O}
 
 .PHONY: eslint
 eslint:
-	docker-compose run --rm node yarn run lint ${ESL_OUT}
-
-.PHONY: fix-eslint
-fix-eslint:
-	docker-compose run --rm node yarn run lint --fix
+	docker-compose run --rm node yarn run -s lint ${O}
 
 .PHONY: type-check
 type-check:
@@ -69,7 +58,7 @@ type-check:
 
 .PHONY: unit-tests
 unit-tests:
-	docker-compose run --rm -e JEST_JUNIT_OUTPUT_DIR="./reports" -e JEST_JUNIT_OUTPUT_NAME="jest.xml" node yarn run test:unit ${JEST_OUT}
+	docker-compose run --rm -e JEST_JUNIT_OUTPUT_DIR="./reports" -e JEST_JUNIT_OUTPUT_NAME="jest.xml" node yarn run test:unit ${O}
 
 .PHONY: tests
 tests: node_modules
