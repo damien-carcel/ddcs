@@ -19,6 +19,7 @@ build-prod: pull
 .PHONY: update-node-modules
 update-node-modules:
 	docker-compose run --rm node yarn upgrade-interactive --latest
+	docker-compose run --rm node yarn upgrade
 
 yarn.lock: package.json
 	docker-compose run --rm node yarn install
