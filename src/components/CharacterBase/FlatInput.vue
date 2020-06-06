@@ -1,7 +1,12 @@
 <template>
-  <div class="flat-input">
-    <input type="text" :id="inputId" />
-    <label :for="inputId">{{ label }}</label>
+  <div class="flex-auto mx-2 px-2">
+    <input
+      class="appearance-none border-b border-gray-800 w-full py-1"
+      type="text"
+      :aria-label="label"
+      :id="inputId"
+    />
+    <label class="text-sm text-gray-600" :for="inputId">{{ label }}</label>
   </div>
 </template>
 
