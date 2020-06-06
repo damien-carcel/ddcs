@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import CharacterBase from "./components/CharacterBase/CharacterBase.vue";
+import CharacterBase from "@/components/CharacterBase/CharacterBase.vue";
 
 export default Vue.extend({
   name: "App",

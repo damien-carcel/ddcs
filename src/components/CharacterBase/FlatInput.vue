@@ -4,28 +4,34 @@
       class="appearance-none border-b border-gray-800 w-full py-1"
       type="text"
       :aria-label="label"
-      :id="inputId"
+      :id="identifier"
+      v-model="inputValue"
     />
-    <label class="text-sm text-gray-600" :for="inputId">{{ label }}</label>
+    <label class="text-sm text-gray-600" :for="identifier">{{ label }}</label>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { v4 as uuidv4 } from "uuid";
 
 export default Vue.extend({
-  data() {
-    const inputId: string = uuidv4();
-
-    return {
-      inputId: inputId,
-    };
-  },
-
   name: "FlatInput",
   props: {
+    identifier: String,
     label: String,
+  },
+  data: function () {
+    return {
+      inputValue: this.$store.state.characterBaseInformation[this.identifier],
+    };
+  },
+  watch: {
+    inputValue(newInputValue: string): void {
+      this.$store.commit("updateCharacterBaseInformation", {
+        identifier: this.identifier,
+        value: newInputValue,
+      });
+    },
   },
 });
 </script>
