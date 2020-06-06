@@ -35,7 +35,6 @@
       <div class="self-center">
         <img
           alt="D&D character sheet logo"
-          class="h-40"
           src="../../assets/images/logo.png"
         />
       </div>
