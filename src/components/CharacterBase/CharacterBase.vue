@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-3 m-5">
+  <div class="characterBase grid grid-cols-3 m-5">
     <div class="my-2">
       <div>
         <FlatInput identifier="name" label="Nom du personnage" />

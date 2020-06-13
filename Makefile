@@ -4,17 +4,21 @@ SHELL = bash
 
 O ?=
 
-# Build Docker images
+# Docker Compose services
 
 .PHONY: pull
 pull:
 	docker-compose pull
 
 .PHONY: build-prod
-build-prod: pull
+build-prod:
 	docker-compose build --pull prod
 
-# Prepare the application dependencies
+.PHONY: down
+down:
+	docker-compose down -v
+
+# Application dependencies
 
 .PHONY: update-node-modules
 update-node-modules:
@@ -27,7 +31,7 @@ yarn.lock: package.json
 node_modules: yarn.lock
 	docker-compose run --rm node yarn install --frozen-lockfile --check-files
 
-# Serve the applications
+# Serve and build-prod
 
 .PHONY: dev
 dev: node_modules
@@ -37,13 +41,7 @@ dev: node_modules
 prod: build-prod
 	docker-compose up -d prod
 
-# Clean the containers
-
-.PHONY: down
-down:
-	docker-compose down -v
-
-# Test the app
+# Tests
 
 .PHONY: stylelint
 stylelint:
@@ -55,15 +53,25 @@ eslint:
 
 .PHONY: type-check
 type-check:
-	docker-compose run --rm node yarn run type-check
+	docker-compose run --rm  node yarn run type-check
 
-.PHONY: unit-tests
-unit-tests:
-	docker-compose run --rm -e JEST_JUNIT_OUTPUT_DIR="./reports" -e JEST_JUNIT_OUTPUT_NAME="jest.xml" node yarn run test:unit ${O}
+.PHONY: unit
+unit:
+	docker-compose run --rm -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="unit.xml" node yarn run test:unit ${O}
+
+.PHONY: end-to-end
+end-to-end:
+	docker-compose run --rm -e MOCHA_FILE="tests/reports/e2e.xml" cypress yarn run test:e2e --headless ${O}
+
+.PHONY: end-to-end-x11-sharing
+end-to-end-x11-sharing:
+	docker-compose run --rm --entrypoint="cypress open --project ." -e DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix" cypress yarn run test:e2e
 
 .PHONY: tests
 tests: node_modules
 	$(MAKE) stylelint
 	$(MAKE) eslint
 	$(MAKE) type-check
-	$(MAKE) unit-tests
+	$(MAKE) unit
+	$(MAKE) prod
+	$(MAKE) end-to-end

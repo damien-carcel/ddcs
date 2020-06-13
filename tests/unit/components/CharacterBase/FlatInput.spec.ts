@@ -1,5 +1,5 @@
 describe("Unit test example", () => {
   it("tests nothing", () => {
-    expect(true).toBeTruthy();
+    expect(true).toStrictEqual(true);
   });
 });

@@ -3,7 +3,7 @@
 # the application for production      #
 #######################################
 
-FROM node:12-buster-slim as builder
+FROM node:slim as builder
 
 USER node
 RUN mkdir /home/node/ddcs

@@ -3,17 +3,14 @@
 The advancement of the project can be followed [here](https://github.com/damien-carcel/ddcs/projects/1).
 
 ## Project setup
-```bash
-$ make node_modules
-```
 
-### Compiles and hot-reloads for development
+### Compiles and serve with hot-reloads for development
 
 ```bash
 $ make dev
 ```
 
-### Compiles and minifies for production
+### Serve in production like conditions
 
 ```bash
 $ make prod
@@ -28,3 +25,7 @@ $ make tests
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## License
+
+This repository is under the MIT license. See the complete license in the [LICENSE](https://github.com/damien-carcel/ddcs/blob/master/LICENSE) file.

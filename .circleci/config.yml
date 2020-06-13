@@ -29,6 +29,9 @@ jobs:
             - checkout
             - proxy-network
             - run:
+                name: Pull Docker images
+                command: make pull
+            - run:
                 name: Create cache and configuration directories for the client dependencies
                 command: |
                     touch ~/.yarnrc
@@ -47,23 +50,33 @@ jobs:
                     - ~/.cache/yarn
             - run:
                 name: Create report directory
-                command: mkdir reports
+                command: mkdir tests/reports
             - run:
                 name: Lint CSS/LESS code
-                command: make stylelint O="--custom-formatter 'node_modules/stylelint-junit-formatter' > reports/stylelint.xml"
+                command: make stylelint O="--custom-formatter 'node_modules/stylelint-junit-formatter' > tests/reports/stylelint.xml"
             - run:
                 name: Lint JavaScript/TypeScript code
-                command: make eslint O="--no-fix -f junit > reports/eslint.xml"
+                command: make eslint O="--no-fix -f junit > tests/reports/eslint.xml"
             - run:
                 name: Run TS type checking
                 command: make type-check
             - run:
                 name: Run unit tests
-                command: make unit-tests O="--ci --reporters=default --reporters=jest-junit"
+                command: make unit O="--ci --reporters=default --reporters=jest-junit"
+            - run:
+                name: Build production-like Docker images
+                command: make prod
+            - run:
+                name: Run End to End tests
+                command: make end-to-end O="--reporter mocha-junit-reporter"
             - store_test_results:
-                path: reports
+                path: tests/reports
             - store_artifacts:
-                path: reports
+                path: tests/reports
+            - store_artifacts:
+                path: tests/e2e/screenshots
+            - store_artifacts:
+                path: tests/e2e/videos
 
 workflows:
     version: 2
@@ -74,13 +87,3 @@ workflows:
                     branches:
                         ignore:
                             - master
-    weekly:
-        triggers:
-            - schedule:
-                cron: "0 0 * * 1"
-                filters:
-                    branches:
-                        only:
-                            - master
-        jobs:
-            - tests
