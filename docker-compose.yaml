@@ -27,7 +27,7 @@ services:
     image: 'cypress/included:4.8.0'
     networks:
       - ddcs
-    user: '${HOST_USER_IDS:-1000:1000}'
+    user: 'node'
     volumes:
       - './:/srv/app'
     working_dir: '/srv/app'
@@ -37,19 +37,8 @@ services:
       context: './'
       target: 'prod'
     image: 'carcel/dd/prod:latest'
-    labels:
-      - 'traefik.http.middlewares.redirect-ddcs-http-to-https.redirectScheme.scheme=https'
-      - 'traefik.http.routers.ddcs.entrypoints=web'
-      - 'traefik.http.routers.ddcs.middlewares=redirect-ddcs-http-to-https'
-      - 'traefik.http.routers.ddcs.rule=Host(`ddcs.docker.localhost`)'
-      - 'traefik.http.routers.ddcs-with-https.entrypoints=websecure'
-      - 'traefik.http.routers.ddcs-with-https.rule=Host(`ddcs.docker.localhost`)'
-      - 'traefik.http.routers.ddcs-with-https.tls=true'
     networks:
       - ddcs
-      - proxy
 
 networks:
   ddcs:
-  proxy:
-    external: true

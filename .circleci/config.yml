@@ -12,22 +12,11 @@ executor-config: &executor-config
 
 # -----
 
-commands:
-    proxy-network:
-        description: Create "proxy" Docker network (ignore if it already exists)
-        steps:
-            - run:
-                name: Create "proxy" Docker network (ignore if it already exists)
-                command: docker network create proxy || true
-
-# -----
-
 jobs:
     tests:
         <<: *executor-config
         steps:
             - checkout
-            - proxy-network
             - run:
                 name: Pull Docker images
                 command: make pull
@@ -67,8 +56,14 @@ jobs:
                 name: Build production-like Docker images
                 command: make prod
             - run:
+                name: Set the project permissions so the "node" user of the Cypress Docker image can access it
+                command: sudo chown -R 1000:1000 ~/project
+            - run:
                 name: Run End to End tests
                 command: make end-to-end O="--reporter mocha-junit-reporter"
+            - run:
+                name: Set back the project permissions so the CircleCI user so the test results and artefact can be used
+                command: sudo chown -R 1001:1002 ~/project
             - store_test_results:
                 path: tests/reports
             - store_artifacts:
