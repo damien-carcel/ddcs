@@ -25,7 +25,7 @@ jobs:
                 command: |
                     touch ~/.yarnrc
                     mkdir ~/.yarn
-                    mkdir -p ~/.cache/yarn
+                    mkdir -p ~/.cache/yarn ~/.cache/Cypress
             - restore_cache:
                 keys:
                     - yarn-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
@@ -53,11 +53,8 @@ jobs:
                 name: Run unit tests
                 command: make unit O="--ci --reporters=default --reporters=jest-junit"
             - run:
-                name: Build production-like Docker images
-                command: make prod
-            - run:
                 name: Set the project permissions so the "node" user of the Cypress Docker image can access it
-                command: sudo chown -R 1000:1000 ~/project
+                command: sudo chown -R 1000:1000 ~/project  ~/.cache/Cypress
             - run:
                 name: Run End to End tests
                 command: make end-to-end O="--reporter mocha-junit-reporter"

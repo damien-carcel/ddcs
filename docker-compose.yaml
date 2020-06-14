@@ -4,7 +4,7 @@ services:
   node:
     environment:
       CLIENT_PORT: '${CLIENT_PORT:-8080}'
-      CYPRESS_INSTALL_BINARY: 0
+      CYPRESS_CACHE_FOLDER: '/home/cypress-cache'
       YARN_CACHE_FOLDER: '/home/yarn-cache'
     expose:
       - '${CLIENT_PORT:-8080}'
@@ -16,29 +16,24 @@ services:
     user: '${HOST_USER_IDS:-1000:1000}'
     volumes:
       - './:/srv/app'
+      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/cypress-cache'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/yarn-cache'
       - '${HOST_YARN_CONFIG_FOLDER:-~/.yarn}:/.yarn'
       - '${HOST_YARN_CONFIG_FILE:-~/.yarnrc}:/.yarnrc'
     working_dir: '/srv/app'
 
   cypress:
+    entrypoint: '/usr/local/bin/docker-entrypoint.sh'
     environment:
-      CYPRESS_baseUrl: 'http://prod:80'
+      CYPRESS_CACHE_FOLDER: '/home/cypress-cache'
     image: 'cypress/included:4.8.0'
     networks:
       - ddcs
     user: 'node'
     volumes:
       - './:/srv/app'
+      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/cypress-cache'
     working_dir: '/srv/app'
-
-  prod:
-    build:
-      context: './'
-      target: 'prod'
-    image: 'carcel/dd/prod:latest'
-    networks:
-      - ddcs
 
 networks:
   ddcs:

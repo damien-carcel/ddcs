@@ -7,13 +7,13 @@ The advancement of the project can be followed [here](https://github.com/damien-
 ### Compiles and serve with hot-reloads for development
 
 ```bash
-$ make dev
+$ make serve
 ```
 
-### Serve in production like conditions
+### Compiles and minifies for production
 
 ```bash
-$ make prod
+$ make build
 ```
 
 ### Run the tests

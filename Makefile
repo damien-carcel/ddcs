@@ -10,10 +10,6 @@ O ?=
 pull:
 	docker-compose pull
 
-.PHONY: build-prod
-build-prod:
-	docker-compose build --pull prod
-
 .PHONY: down
 down:
 	docker-compose down -v
@@ -33,13 +29,13 @@ node_modules: yarn.lock
 
 # Serve and build-prod
 
-.PHONY: dev
-dev: node_modules
+.PHONY: build
+serve: node_modules
 	docker-compose run --rm --service-ports node yarn serve
 
-.PHONY: prod
-prod: build-prod
-	docker-compose up -d prod
+.PHONY: build
+build: node_modules
+	docker-compose run --rm --service-ports node yarn build
 
 # Tests
 
@@ -65,7 +61,7 @@ end-to-end:
 
 .PHONY: end-to-end-x11-sharing
 end-to-end-x11-sharing:
-	docker-compose run --rm --entrypoint="cypress open --project ." -e DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix" cypress yarn run test:e2e
+	docker-compose run --rm -e DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix" cypress yarn run test:e2e
 
 .PHONY: tests
 tests: node_modules
@@ -73,5 +69,4 @@ tests: node_modules
 	$(MAKE) eslint
 	$(MAKE) type-check
 	$(MAKE) unit
-	$(MAKE) prod
 	$(MAKE) end-to-end
