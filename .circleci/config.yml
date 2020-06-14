@@ -42,10 +42,10 @@ jobs:
                 command: mkdir tests/reports
             - run:
                 name: Lint CSS/LESS code
-                command: make stylelint O="--custom-formatter 'node_modules/stylelint-junit-formatter' > tests/reports/stylelint.xml"
+                command: make stylelint
             - run:
                 name: Lint JavaScript/TypeScript code
-                command: make eslint O="--no-fix -f junit > tests/reports/eslint.xml"
+                command: make eslint
             - run:
                 name: Run TS type checking
                 command: make type-check

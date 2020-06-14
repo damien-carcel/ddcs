@@ -41,11 +41,11 @@ build: node_modules
 
 .PHONY: stylelint
 stylelint:
-	docker-compose run --rm node yarn run -s stylelint ${O}
+	docker-compose run --rm node yarn run -s stylelint
 
 .PHONY: eslint
 eslint:
-	docker-compose run --rm node yarn run -s lint ${O}
+	docker-compose run --rm node yarn run -s lint
 
 .PHONY: type-check
 type-check:
