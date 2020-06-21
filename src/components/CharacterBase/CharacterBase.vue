@@ -33,10 +33,7 @@
     </div>
     <div class="flex justify-center my-2">
       <div class="self-center">
-        <img
-          alt="D&D character sheet logo"
-          src="../../assets/images/logo.png"
-        />
+        <img alt="D&D character sheet logo" src="../../assets/images/logo.png" />
       </div>
     </div>
   </div>

@@ -5,8 +5,7 @@ import { NewCharacterBaseValue } from "@/model/CharacterBase";
 Vue.use(Vuex);
 
 const getCharacterBaseInformation = () => {
-  const storedCharacterBaseInformation =
-    localStorage.getItem("characterBaseInformation") ?? null;
+  const storedCharacterBaseInformation = localStorage.getItem("characterBaseInformation") ?? null;
 
   if (null === storedCharacterBaseInformation) {
     return {
@@ -36,17 +35,10 @@ export default new Vuex.Store({
     characterBaseInformation: getCharacterBaseInformation(),
   },
   mutations: {
-    updateCharacterBaseInformation(
-      state,
-      newCharacterBaseValue: NewCharacterBaseValue
-    ) {
-      state.characterBaseInformation[newCharacterBaseValue.identifier] =
-        newCharacterBaseValue.value;
+    updateCharacterBaseInformation(state, newCharacterBaseValue: NewCharacterBaseValue) {
+      state.characterBaseInformation[newCharacterBaseValue.identifier] = newCharacterBaseValue.value;
 
-      localStorage.setItem(
-        "characterBaseInformation",
-        JSON.stringify(state.characterBaseInformation)
-      );
+      localStorage.setItem("characterBaseInformation", JSON.stringify(state.characterBaseInformation));
     },
   },
   actions: {},
