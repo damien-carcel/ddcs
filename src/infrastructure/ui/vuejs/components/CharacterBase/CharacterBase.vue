@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import FlatInput from "@/components/CharacterBase/FlatInput.vue";
+import FlatInput from "@/infrastructure/ui/vuejs/components/CharacterBase/FlatInput.vue";
 
 export default Vue.extend({
   name: "CharacterBase",

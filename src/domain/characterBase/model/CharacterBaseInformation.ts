@@ -1,4 +1,4 @@
-interface CharacterBase {
+type CharacterBaseInformation = {
   name: string;
   class: string;
   level: string;
@@ -14,11 +14,6 @@ interface CharacterBase {
   eyes: string;
   hair: string;
   skin: string;
-}
+};
 
-interface NewCharacterBaseValue {
-  identifier: keyof CharacterBase;
-  value: string;
-}
-
-export { CharacterBase, NewCharacterBaseValue };
+export { CharacterBaseInformation };
