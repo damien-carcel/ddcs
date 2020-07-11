@@ -1,8 +1,9 @@
+import { injectable } from "inversify";
 import { CharacterBaseInformation } from "@/domain/characterBase/model/CharacterBaseInformation";
 import CharacterBaseInformationRepository from "@/domain/characterBase/repository/CharacterBaseInformationRepository";
 
-export default class CharacterBaseInformationRepositoryLocalStorageAdapter
-  implements CharacterBaseInformationRepository {
+@injectable()
+export default class CharacterBaseInformationRepositoryAdapter implements CharacterBaseInformationRepository {
   get(): string | null {
     return localStorage.getItem("characterBaseInformation") ?? null;
   }

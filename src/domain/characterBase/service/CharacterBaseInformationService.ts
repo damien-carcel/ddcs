@@ -1,8 +1,13 @@
+import { inject, injectable } from "inversify";
 import { CharacterBaseInformation } from "@/domain/characterBase/model/CharacterBaseInformation";
 import CharacterBaseInformationRepository from "@/domain/characterBase/repository/CharacterBaseInformationRepository";
+import { TYPES } from "@/type";
 
+@injectable()
 export default class CharacterBaseInformationService {
-  constructor(private repository: CharacterBaseInformationRepository) {}
+  constructor(
+    @inject(TYPES.CharacterBaseInformationRepository) private repository: CharacterBaseInformationRepository
+  ) {}
 
   get(): CharacterBaseInformation {
     const storedCharacterBaseInformation = this.repository.get();

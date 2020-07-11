@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import Vue from "vue";
 import App from "./infrastructure/ui/vuejs/App.vue";
 import store from "@/infrastructure/ui/vuejs/store";

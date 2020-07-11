@@ -1,13 +1,16 @@
+import { container } from "@/container";
+import { TYPES } from "@/type";
+
 import Vue from "vue";
 import Vuex from "vuex";
-import { NewCharacterBaseValue } from "@/domain/characterBase/model/NewCharacterBaseValue";
+
 import CharacterBaseInformationService from "@/domain/characterBase/service/CharacterBaseInformationService";
-import CharacterBaseInformationRepositoryLocalStorageAdapter from "@/infrastructure/storage/localStorage/CharacterBaseInformationRepositoryLocalStorageAdapter";
+import { NewCharacterBaseValue } from "@/domain/characterBase/model/NewCharacterBaseValue";
 
 Vue.use(Vuex);
 
-const characterBaseInformationService = new CharacterBaseInformationService(
-  new CharacterBaseInformationRepositoryLocalStorageAdapter()
+const characterBaseInformationService = container.get<CharacterBaseInformationService>(
+  TYPES.CharacterBaseInformationService
 );
 
 export default new Vuex.Store({

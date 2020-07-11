@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.13",
     "tailwindcss": "^1.4.6",
     "vue": "^2.6.11",
     "vuex": "^3.5.1"
