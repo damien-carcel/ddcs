@@ -2,29 +2,11 @@
 
 The advancement of the project can be followed [here](https://github.com/damien-carcel/ddcs/projects/1).
 
-## Project setup
-
-### Compiles and serve with hot-reloads for development
+## How to use it?
 
 ```bash
-$ make serve
+$ make
 ```
-
-### Compiles and minifies for production
-
-```bash
-$ make build
-```
-
-### Run the tests
-
-```bash
-$ make tests
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## License
 
