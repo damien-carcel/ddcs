@@ -9,6 +9,7 @@ executor-config: &executor-config
         COMPOSE_DOCKER_CLI_BUILD: 1
         DOCKER_BUILDKIT: 1
         HOST_USER_IDS: "1001:1002"
+        RUN_ON_CI: true
 
 # -----
 
@@ -51,13 +52,13 @@ jobs:
                 command: make type-check
             - run:
                 name: Run unit tests
-                command: make unit O="--ci --reporters=default --reporters=jest-junit"
+                command: make unit IO="--ci --reporters=default --reporters=jest-junit"
             - run:
                 name: Set the project permissions so the "node" user of the Cypress Docker image can access it
                 command: sudo chown -R 1000:1000 ~/project  ~/.cache/Cypress
             - run:
                 name: Run End to End tests
-                command: make end-to-end O="--reporter mocha-junit-reporter"
+                command: make end-to-end IO="--reporter mocha-junit-reporter"
             - run:
                 name: Set back the project permissions so the CircleCI user so the test results and artefact can be used
                 command: sudo chown -R 1001:1002 ~/project

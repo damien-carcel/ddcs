@@ -8,7 +8,13 @@ help:
 
 # Environment Variables
 
-O ?=
+IO ?=
+RUN_ON_CI ?= false
+ifeq (${RUN_ON_CI},true)
+	DC_RUN=docker-compose run --rm -T
+else
+	DC_RUN=docker-compose run --rm
+endif
 
 # Docker Compose services
 
@@ -19,28 +25,28 @@ pull: ## Pull all Docker images used in docker-compose.yaml
 # Application dependencies
 
 yarn.lock: package.json
-	@docker-compose run --rm node yarn install
+	@$(DC_RUN) node yarn install
 
 node_modules: yarn.lock
-	@docker-compose run --rm node yarn install --frozen-lockfile --check-files
+	@$(DC_RUN) node yarn install --frozen-lockfile --check-files
 
 .PHONY: install
 install: node_modules ## Install project dependencies
 
 .PHONY: upgrade
 upgrade: ## Upgrades project dependencies to their latest version (works only if project dependencies were installed at least once)
-	@docker-compose run --rm node yarn upgrade-interactive --latest
-	@docker-compose run --rm node yarn upgrade
+	@$(DC_RUN) node yarn upgrade-interactive --latest
+	@$(DC_RUN) node yarn upgrade
 
 # Serve and build-prod
 
 .PHONY: serve
 serve: pull node_modules ## Run the application using Vue CLI development server (hit CTRL+c to stop the server)
-	@docker-compose run --rm --service-ports node yarn serve
+	@$(DC_RUN) --service-ports node yarn serve
 
 .PHONY: build
 build: pull node_modules ## Build the production artifacts
-	@docker-compose run --rm --service-ports node yarn build
+	@$(DC_RUN) --service-ports node yarn build
 
 # Tests
 
@@ -59,24 +65,24 @@ tests: node_modules ## Execute all the tests
 
 .PHONY: stylelint
 stylelint: ## Lint the LESS code
-	@docker-compose run --rm node yarn run -s stylelint
+	@$(DC_RUN) node yarn run -s stylelint
 
 .PHONY: eslint
 eslint: ## Lint the TypeScript code
-	@docker-compose run --rm node yarn run -s lint
+	@$(DC_RUN) node yarn run -s lint
 
 .PHONY: type-check
 type-check: ## Look for type errors
-	@docker-compose run --rm  node yarn run type-check
+	@$(DC_RUN)  node yarn run type-check
 
 .PHONY: unit
 unit: ## Execute unit tests (use "make unit O=path/to/test" to run a specific test)
-	@docker-compose run --rm -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="unit.xml" node yarn run test:unit ${O}
+	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="unit.xml" node yarn run test:unit ${IO}
 
 .PHONY: end-to-end
 end-to-end: ## Execute end to end tests in headless mode (use "make end-to-end O=path/to/test" to run a specific test)
-	@docker-compose run --rm -e MOCHA_FILE="tests/reports/e2e.xml" cypress yarn run test:e2e --headless ${O}
+	@$(DC_RUN) -e MOCHA_FILE="tests/reports/e2e.xml" cypress yarn run test:e2e --headless ${IO}
 
 .PHONY: end-to-end-x11-sharing
 end-to-end-x11-sharing: ## Execute end to end tests with X11 sharing
-	@docker-compose run --rm -e DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix" cypress yarn run test:e2e
+	@$(DC_RUN) -e DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix" cypress yarn run test:e2e
