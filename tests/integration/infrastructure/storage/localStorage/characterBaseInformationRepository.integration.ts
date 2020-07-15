@@ -28,9 +28,11 @@ describe('Tests the local storage adapter of the character base information repo
   it('gets the character base information', () => {
     localStorage.setItem('characterBaseInformation', JSON.stringify(characterBaseInformationFixtures));
 
-    const result = container.get<CharacterBaseInformationRepository>(TYPES.CharacterBaseInformationRepository).get();
+    const characterBaseInformation = container
+      .get<CharacterBaseInformationRepository>(TYPES.CharacterBaseInformationRepository)
+      .get();
 
-    expect(result).toStrictEqual(JSON.stringify(characterBaseInformationFixtures));
+    expect(characterBaseInformation).toStrictEqual(JSON.stringify(characterBaseInformationFixtures));
   });
 
   it('saves the character base information', () => {
