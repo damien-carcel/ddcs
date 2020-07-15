@@ -7,6 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:acceptance": "TEST_MODE=acceptance vue-cli-service test:unit",
+    "test:integration": "TEST_MODE=integration vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "stylelint": "stylelint 'src/**/*.{css,vue}'",

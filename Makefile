@@ -58,9 +58,13 @@ tests: node_modules ## Execute all the tests
 	@make eslint
 	@echo "Check type errors"
 	@make type-check
-	@echo "Execute unit tests"
+	@echo "Run unit tests"
 	@make unit
-	@echo "Execute end-to-end tests"
+	@echo "Run business acceptance tests"
+	@make acceptance
+	@echo "Run adapters integration tests"
+	@make integration
+	@echo "Run end-to-end tests"
 	@make end-to-end
 
 .PHONY: stylelint
@@ -76,13 +80,21 @@ type-check: ## Look for type errors
 	@$(DC_RUN)  node yarn run type-check
 
 .PHONY: unit
-unit: ## Execute unit tests (use "make unit O=path/to/test" to run a specific test)
+unit: ## Run unit tests (use "make unit O=path/to/test" to run a specific test)
 	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="unit.xml" node yarn run test:unit ${IO}
 
+.PHONY: acceptance
+acceptance: ## Run business acceptance tests (use "make acceptance O=path/to/test" to run a specific test)
+	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="acceptance.xml" node yarn run test:acceptance ${IO}
+
+.PHONY: integration
+integration: ## Run adapters integration tests (use "make integration O=path/to/test" to run a specific test)
+	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="integration.xml" node yarn run test:integration ${IO}
+
 .PHONY: end-to-end
-end-to-end: ## Execute end to end tests in headless mode (use "make end-to-end O=path/to/test" to run a specific test)
+end-to-end: ## Run end to end tests in headless mode (use "make end-to-end O=path/to/test" to run a specific test)
 	@$(DC_RUN) -e MOCHA_FILE="tests/reports/e2e.xml" cypress yarn run test:e2e --headless ${IO}
 
 .PHONY: end-to-end-x11-sharing
-end-to-end-x11-sharing: ## Execute end to end tests with X11 sharing
+end-to-end-x11-sharing: ## Run end to end tests with X11 sharing
 	@$(DC_RUN) -e DISPLAY -v "/tmp/.X11-unix:/tmp/.X11-unix" cypress yarn run test:e2e

@@ -54,6 +54,12 @@ jobs:
                 name: Run unit tests
                 command: make unit IO="--ci --reporters=default --reporters=jest-junit"
             - run:
+                name: Run business acceptance tests
+                command: make acceptance IO="--ci --reporters=default --reporters=jest-junit"
+            - run:
+                name: Run adapters integration tests
+                command: make integration IO="--ci --reporters=default --reporters=jest-junit"
+            - run:
                 name: Set the project permissions so the "node" user of the Cypress Docker image can access it
                 command: sudo chown -R 1000:1000 ~/project  ~/.cache/Cypress
             - run:
