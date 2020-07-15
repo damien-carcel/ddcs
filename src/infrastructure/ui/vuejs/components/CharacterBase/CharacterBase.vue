@@ -40,11 +40,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import FlatInput from "@/infrastructure/ui/vuejs/components/CharacterBase/FlatInput.vue";
+import Vue from 'vue';
+import FlatInput from '@/infrastructure/ui/vuejs/components/CharacterBase/FlatInput.vue';
 
 export default Vue.extend({
-  name: "CharacterBase",
+  name: 'CharacterBase',
   components: {
     FlatInput,
   },

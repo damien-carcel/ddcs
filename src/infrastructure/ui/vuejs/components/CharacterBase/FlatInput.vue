@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
-  name: "FlatInput",
+  name: 'FlatInput',
   props: {
     identifier: String,
     label: String,
@@ -27,7 +27,7 @@ export default Vue.extend({
   },
   watch: {
     inputValue(newInputValue: string): void {
-      this.$store.commit("updateCharacterBaseInformation", {
+      this.$store.commit('updateCharacterBaseInformation', {
         identifier: this.identifier,
         value: newInputValue,
       });
