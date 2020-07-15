@@ -52,19 +52,47 @@ build: pull node_modules ## Build the production artifacts
 
 .PHONY: tests
 tests: node_modules ## Execute all the tests
-	@echo "Lint the stylesheets"
+	@echo ""
+	@echo "|----------------------|"
+	@echo "| Lint the stylesheets |"
+	@echo "|----------------------|"
+	@echo ""
 	@make stylelint
-	@echo "Lint the TypeScript code"
+	@echo ""
+	@echo "|--------------------------|"
+	@echo "| Lint the TypeScript code |"
+	@echo "|--------------------------|"
+	@echo ""
 	@make eslint
-	@echo "Check type errors"
+	@echo ""
+	@echo "|-------------------|"
+	@echo "| Check type errors |"
+	@echo "|-------------------|"
+	@echo ""
 	@make type-check
-	@echo "Run unit tests"
+	@echo ""
+	@echo "|----------------|"
+	@echo "| Run unit tests |"
+	@echo "|----------------|"
+	@echo ""
 	@make unit
-	@echo "Run business acceptance tests"
+	@echo ""
+	@echo "|-------------------------------|"
+	@echo "| Run business acceptance tests |"
+	@echo "|-------------------------------|"
+	@echo ""
 	@make acceptance
-	@echo "Run adapters integration tests"
+	@echo ""
+	@echo "|--------------------------------|"
+	@echo "| Run adapters integration tests |"
+	@echo "|--------------------------------|"
+	@echo ""
 	@make integration
-	@echo "Run end-to-end tests"
+	@echo ""
+	@echo "|----------------------|"
+	@echo "| Run end-to-end tests |"
+	@echo "|----------------------|"
+	@echo ""
 	@make end-to-end
 
 .PHONY: stylelint
