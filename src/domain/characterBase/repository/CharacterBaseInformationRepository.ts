@@ -1,4 +1,4 @@
-import { CharacterBaseInformation } from '@/domain/characterBase/model/CharacterBaseInformation';
+import { CharacterBaseInformation } from '@/domain/characterBase/types/CharacterBaseInformation';
 
 export default interface CharacterBaseInformationRepository {
   get(): string | null;

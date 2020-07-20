@@ -1,14 +1,13 @@
 {
   "name": "ddcs",
-  "version": "0.1.0",
   "private": true,
   "description": "Dungeon and Dragon character sheet",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "test:acceptance": "TEST_MODE=acceptance vue-cli-service test:unit",
-    "test:integration": "TEST_MODE=integration vue-cli-service test:unit",
+    "test:acceptance": "TEST_ENV=acceptance vue-cli-service test:unit",
+    "test:integration": "TEST_ENV=integration vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "stylelint": "stylelint 'src/**/*.{css,vue}'",
@@ -16,8 +15,6 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
-    "inversify": "^5.0.1",
-    "reflect-metadata": "^0.1.13",
     "tailwindcss": "^1.5.1",
     "vue": "^2.6.11",
     "vuex": "^3.5.1"

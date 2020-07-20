@@ -1,7 +1,7 @@
-const { TEST_MODE } = process.env;
+const { TEST_ENV } = process.env;
 
 let testMatch;
-switch (TEST_MODE) {
+switch (TEST_ENV) {
   case 'integration': {
     testMatch = ['**/tests/integration/**/*.integration.[jt]s?(x)', '**/__tests__/*.[jt]s?(x)'];
     break;

@@ -1,34 +1,25 @@
 import CharacterBaseInformationRepositoryAdapter from '@/infrastructure/storage/memory/CharacterBaseInformationRepositoryAdapter';
+import { fixtures as characterBaseInformationFixtures } from '../../../../fixtures/CharacterBaseInformation';
 
 describe('Tests the "in memory" adapter of the character base information repository', () => {
-  const characterBaseInformationFixtures = {
-    name: 'Damien',
-    class: 'coder',
-    level: '1',
-    sizeCategory: 'l',
-    size: '1 meter 85',
-    age: '38',
-    sex: 'm',
-    playerName: 'Carcel',
-    race: 'human',
-    alignment: 'cm',
-    divinity: 'none',
-    weight: '105 kg',
-    eyes: 'brown',
-    hair: 'brown',
-    skin: 'pale',
-  };
-
   it('gets the character base information', () => {
-    const repository = new CharacterBaseInformationRepositoryAdapter(characterBaseInformationFixtures);
+    const repository = new CharacterBaseInformationRepositoryAdapter(JSON.stringify(characterBaseInformationFixtures));
 
     const characterBaseInformation = repository.get();
 
     expect(characterBaseInformation).toStrictEqual(JSON.stringify(characterBaseInformationFixtures));
   });
 
+  it("gets nothing if there's nothing to get", () => {
+    const repository = new CharacterBaseInformationRepositoryAdapter();
+
+    const characterBaseInformation = repository.get();
+
+    expect(characterBaseInformation).toBeNull();
+  });
+
   it('saves the character base information', () => {
-    const repository = new CharacterBaseInformationRepositoryAdapter({});
+    const repository = new CharacterBaseInformationRepositoryAdapter();
 
     repository.save(characterBaseInformationFixtures);
 
@@ -36,7 +27,7 @@ describe('Tests the "in memory" adapter of the character base information reposi
   });
 
   it('udpates the character base information', () => {
-    const repository = new CharacterBaseInformationRepositoryAdapter(characterBaseInformationFixtures);
+    const repository = new CharacterBaseInformationRepositoryAdapter(JSON.stringify(characterBaseInformationFixtures));
 
     const updatedCharacterBaseInformation = {
       ...characterBaseInformationFixtures,
