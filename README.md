@@ -1,4 +1,4 @@
-# ddcs - A Dongeon and Dragon character sheet
+# DDCS - A Dungeon and Dragon Character Sheet
 
 The advancement of the project can be followed [here](https://github.com/damien-carcel/ddcs/projects/1).
 

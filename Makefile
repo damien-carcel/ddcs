@@ -108,19 +108,19 @@ type-check: ## Look for type errors
 	@$(DC_RUN)  node yarn run type-check
 
 .PHONY: unit
-unit: ## Run unit tests (use "make unit O=path/to/test" to run a specific test)
+unit: ## Run unit tests (use "make unit IO=path/to/test" to run a specific test)
 	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="unit.xml" node yarn run test:unit ${IO}
 
 .PHONY: acceptance
-acceptance: ## Run business acceptance tests (use "make acceptance O=path/to/test" to run a specific test)
+acceptance: ## Run business acceptance tests (use "make acceptance IO=path/to/test" to run a specific test)
 	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="acceptance.xml" node yarn run test:acceptance ${IO}
 
 .PHONY: integration
-integration: ## Run adapters integration tests (use "make integration O=path/to/test" to run a specific test)
+integration: ## Run adapters integration tests (use "make integration IO=path/to/test" to run a specific test)
 	@$(DC_RUN) -e JEST_JUNIT_OUTPUT_DIR="tests/reports" -e JEST_JUNIT_OUTPUT_NAME="integration.xml" node yarn run test:integration ${IO}
 
 .PHONY: end-to-end
-end-to-end: ## Run end to end tests in headless mode (use "make end-to-end O=path/to/test" to run a specific test)
+end-to-end: ## Run end to end tests in headless mode (use "make end-to-end IO='-s path/to/test'" to run a specific test)
 	@$(DC_RUN) -e MOCHA_FILE="tests/reports/e2e.xml" cypress yarn run test:e2e --headless ${IO}
 
 .PHONY: end-to-end-x11-sharing
