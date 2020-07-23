@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import CharacterBase from "./components/CharacterBase/CharacterBase.vue";
+import Vue from 'vue';
+import CharacterBase from '@/Infrastructure/UI/Vue/components/CharacterBase/CharacterBase.vue';
 
 export default Vue.extend({
-  name: "App",
+  name: 'App',
   components: {
     CharacterBase,
   },

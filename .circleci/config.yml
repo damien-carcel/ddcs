@@ -1,69 +1,60 @@
 version: 2.1
 
-# Aliases
-
-executor-config: &executor-config
-    machine:
-        image: ubuntu-1604:202004-01
-    environment:
-        COMPOSE_DOCKER_CLI_BUILD: 1
-        DOCKER_BUILDKIT: 1
-        HOST_USER_IDS: "1001:1002"
-
-# -----
-
-commands:
-    proxy-network:
-        description: Create "proxy" Docker network (ignore if it already exists)
-        steps:
-            - run:
-                name: Create "proxy" Docker network (ignore if it already exists)
-                command: docker network create proxy || true
-
-# -----
-
 jobs:
     tests:
-        <<: *executor-config
+        docker:
+            - image: cypress/browsers:node12.18.0-chrome83-ff77
         steps:
             - checkout
-            - proxy-network
             - run:
                 name: Create cache and configuration directories for the client dependencies
                 command: |
                     touch ~/.yarnrc
                     mkdir ~/.yarn
-                    mkdir -p ~/.cache/yarn
+                    mkdir -p ~/.cache/yarn ~/.cache/Cypress
             - restore_cache:
                 keys:
                     - yarn-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
                     - yarn-{{ .Environment.CACHE_VERSION }}-
             - run:
                 name: Install dependencies
-                command: make node_modules
+                command: make install
             - save_cache:
                 key: yarn-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
                 paths:
                     - ~/.cache/yarn
             - run:
                 name: Create report directory
-                command: mkdir reports
+                command: mkdir tests/reports
             - run:
                 name: Lint CSS/LESS code
-                command: make stylelint O="--custom-formatter 'node_modules/stylelint-junit-formatter' > reports/stylelint.xml"
+                command: make stylelint
             - run:
                 name: Lint JavaScript/TypeScript code
-                command: make eslint O="--no-fix -f junit > reports/eslint.xml"
+                command: make eslint
             - run:
                 name: Run TS type checking
                 command: make type-check
             - run:
                 name: Run unit tests
-                command: make unit-tests O="--ci --reporters=default --reporters=jest-junit"
+                command: make unit IO="--ci --reporters=default --reporters=jest-junit"
+            - run:
+                name: Run business acceptance tests
+                command: make acceptance IO="--ci --reporters=default --reporters=jest-junit"
+            - run:
+                name: Run adapters integration tests
+                command: make integration IO="--ci --reporters=default --reporters=jest-junit"
+            - run:
+                name: Run End to End tests
+                command: make end-to-end IO="--headless --reporter mocha-junit-reporter"
             - store_test_results:
-                path: reports
+                path: tests/reports
             - store_artifacts:
-                path: reports
+                path: tests/reports
+            - store_artifacts:
+                path: tests/e2e/screenshots
+            - store_artifacts:
+                path: tests/e2e/videos
 
 workflows:
     version: 2
@@ -74,13 +65,3 @@ workflows:
                     branches:
                         ignore:
                             - master
-    weekly:
-        triggers:
-            - schedule:
-                cron: "0 0 * * 1"
-                filters:
-                    branches:
-                        only:
-                            - master
-        jobs:
-            - tests

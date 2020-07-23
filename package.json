@@ -1,23 +1,21 @@
 {
   "name": "ddcs",
-  "description": "Dungeon and Dragon character sheet",
-  "version": "0.1.0",
   "private": true,
+  "description": "Dungeon and Dragon character sheet",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:acceptance": "TEST_ENV=acceptance vue-cli-service test:unit",
+    "test:integration": "TEST_ENV=integration vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "type-check": "tsc --noEmit --pretty",
-    "stylelint": "stylelint 'src/**/*.{css,vue}'"
+    "stylelint": "stylelint 'src/**/*.{css,vue}'",
+    "type-check": "tsc --noEmit --pretty"
   },
   "dependencies": {
-    "@types/uuid": "^8.0.0",
     "core-js": "^3.6.4",
-    "stylelint": "^13.6.1",
-    "stylelint-config-standard": "^20.0.0",
-    "tailwindcss": "^1.5.1",
-    "uuid": "^8.2.0",
+    "tailwindcss": "^1.5.2",
     "vue": "^2.6.11",
     "vuex": "^3.5.1"
   },
@@ -26,6 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
     "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-e2e-cypress": "~4.4.6",
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-plugin-typescript": "^4.4.6",
     "@vue/cli-plugin-unit-jest": "^4.4.6",
@@ -34,12 +33,16 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "1.0.3",
+    "cypress-localstorage-commands": "^1.2.1",
     "eslint": "^7.5.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
     "jest-junit": "^11.0.1",
+    "mocha": "^8.0.1",
+    "mocha-junit-reporter": "^2.0.0",
     "prettier": "^2.0.5",
-    "stylelint-junit-formatter": "^0.2.2",
+    "stylelint": "^13.6.1",
+    "stylelint-config-standard": "^20.0.0",
     "typescript": "^3.9.7",
     "vue-template-compiler": "^2.6.11"
   }

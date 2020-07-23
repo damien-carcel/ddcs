@@ -1,68 +1,112 @@
 SHELL = bash
 
+.PHONY: help
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.DEFAULT_GOAL := help
+
 # Environment Variables
 
-O ?=
+IO ?=
 
-# Build Docker images
-
-.PHONY: pull
-pull:
-	docker-compose pull
-
-.PHONY: build-prod
-build-prod: pull
-	docker-compose build --pull prod
-
-# Prepare the application dependencies
-
-.PHONY: update-node-modules
-update-node-modules:
-	docker-compose run --rm node yarn upgrade-interactive --latest
+# Application dependencies
 
 yarn.lock: package.json
-	docker-compose run --rm node yarn install
+	@yarn install
 
 node_modules: yarn.lock
-	docker-compose run --rm node yarn install --frozen-lockfile --check-files
+	@yarn install --frozen-lockfile --check-files
 
-# Serve the applications
+.PHONY: install
+install: node_modules ## Install project dependencies
 
-.PHONY: dev
-dev: node_modules
-	docker-compose run --rm --service-ports node yarn serve
+.PHONY: upgrade
+upgrade: ## Upgrades project dependencies to their latest version (works only if project dependencies were installed at least once)
+	@yarn upgrade-interactive --latest
+	@yarn upgrade
 
-.PHONY: prod
-prod: build-prod
-	docker-compose up -d prod
+# Serve and build-prod
 
-# Clean the containers
+.PHONY: serve
+serve: node_modules ## Run the application using Vue CLI development server (hit CTRL+c to stop the server)
+	@yarn serve
 
-.PHONY: down
-down:
-	docker-compose down -v
+.PHONY: build
+build: node_modules ## Build the production artifacts
+	@yarn build
 
-# Test the app
-
-.PHONY: stylelint
-stylelint:
-	docker-compose run --rm node yarn run -s stylelint ${O}
-
-.PHONY: eslint
-eslint:
-	docker-compose run --rm node yarn run -s lint ${O}
-
-.PHONY: type-check
-type-check:
-	docker-compose run --rm node yarn run type-check
-
-.PHONY: unit-tests
-unit-tests:
-	docker-compose run --rm -e JEST_JUNIT_OUTPUT_DIR="./reports" -e JEST_JUNIT_OUTPUT_NAME="jest.xml" node yarn run test:unit ${O}
+# Tests
 
 .PHONY: tests
-tests: node_modules
-	$(MAKE) stylelint
-	$(MAKE) eslint
-	$(MAKE) type-check
-	$(MAKE) unit-tests
+tests: node_modules ## Execute all the tests
+	@echo ""
+	@echo "|----------------------|"
+	@echo "| Lint the stylesheets |"
+	@echo "|----------------------|"
+	@echo ""
+	@make stylelint
+	@echo ""
+	@echo "|--------------------------|"
+	@echo "| Lint the TypeScript code |"
+	@echo "|--------------------------|"
+	@echo ""
+	@make eslint
+	@echo ""
+	@echo "|-------------------|"
+	@echo "| Check type errors |"
+	@echo "|-------------------|"
+	@echo ""
+	@make type-check
+	@echo ""
+	@echo "|----------------|"
+	@echo "| Run unit tests |"
+	@echo "|----------------|"
+	@echo ""
+	@make unit
+	@echo ""
+	@echo "|-------------------------------|"
+	@echo "| Run business acceptance tests |"
+	@echo "|-------------------------------|"
+	@echo ""
+	@make acceptance
+	@echo ""
+	@echo "|--------------------------------|"
+	@echo "| Run adapters integration tests |"
+	@echo "|--------------------------------|"
+	@echo ""
+	@make integration
+	@echo ""
+	@echo "|----------------------|"
+	@echo "| Run end-to-end tests |"
+	@echo "|----------------------|"
+	@echo ""
+	@make end-to-end IO="--headless"
+
+.PHONY: stylelint
+stylelint: ## Lint the LESS code
+	@yarn run -s stylelint
+
+.PHONY: eslint
+eslint: ## Lint the TypeScript code
+	@yarn run -s lint
+
+.PHONY: type-check
+type-check: ## Look for type errors
+	@yarn run type-check
+
+.PHONY: unit
+unit: ## Run unit tests — use "make unit IO=path/to/test" to run a specific test
+	@JEST_JUNIT_OUTPUT_DIR="tests/reports" JEST_JUNIT_OUTPUT_NAME="unit.xml" yarn run test:unit ${IO}
+
+.PHONY: acceptance
+acceptance: ## Run business acceptance tests — use "make acceptance IO=path/to/test" to run a specific test
+	@JEST_JUNIT_OUTPUT_DIR="tests/reports" JEST_JUNIT_OUTPUT_NAME="acceptance.xml" yarn run test:acceptance ${IO}
+
+.PHONY: integration
+integration: ## Run adapters integration tests — use "make integration IO=path/to/test" to run a specific test
+	@JEST_JUNIT_OUTPUT_DIR="tests/reports" JEST_JUNIT_OUTPUT_NAME="integration.xml" yarn run test:integration ${IO}
+
+.PHONY: end-to-end
+end-to-end: ## Run end to end tests — use "make end-to-end IO='--headless'" for headless mode and "make end-to-end IO='--headless -s path/to/test'" to run a specific test (works only in headless mode)
+	@MOCHA_FILE="tests/reports/e2e.xml" yarn run test:e2e ${IO}

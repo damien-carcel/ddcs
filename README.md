@@ -1,30 +1,19 @@
-# ddcs - A Dongeon and Dragon character sheet
+# DDCS - A Dungeon and Dragon Character Sheet
 
 The advancement of the project can be followed [here](https://github.com/damien-carcel/ddcs/projects/1).
 
-## Project setup
-```bash
-$ make node_modules
-```
+## Requirements
 
-### Compiles and hot-reloads for development
+- Node >= 12
+- Yarn
+- Make
 
-```bash
-$ make dev
-```
-
-### Compiles and minifies for production
+## How to use it?
 
 ```bash
-$ make prod
+$ make
 ```
 
-### Run the tests
+## License
 
-```bash
-$ make tests
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This repository is under the MIT license. See the complete license in the [LICENSE](https://github.com/damien-carcel/ddcs/blob/master/LICENSE) file.
