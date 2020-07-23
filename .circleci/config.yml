@@ -1,26 +1,11 @@
 version: 2.1
 
-# Aliases
-
-executor-config: &executor-config
-    machine:
-        image: ubuntu-1604:202004-01
-    environment:
-        COMPOSE_DOCKER_CLI_BUILD: 1
-        DOCKER_BUILDKIT: 1
-        HOST_USER_IDS: "1001:1002"
-        RUN_ON_CI: true
-
-# -----
-
 jobs:
     tests:
-        <<: *executor-config
+        docker:
+            - image: cypress/browsers:node12.18.0-chrome83-ff77
         steps:
             - checkout
-            - run:
-                name: Pull Docker images
-                command: make pull
             - run:
                 name: Create cache and configuration directories for the client dependencies
                 command: |
@@ -33,7 +18,7 @@ jobs:
                     - yarn-{{ .Environment.CACHE_VERSION }}-
             - run:
                 name: Install dependencies
-                command: make node_modules
+                command: make install
             - save_cache:
                 key: yarn-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
                 paths:
@@ -60,14 +45,8 @@ jobs:
                 name: Run adapters integration tests
                 command: make integration IO="--ci --reporters=default --reporters=jest-junit"
             - run:
-                name: Set the project permissions so the "node" user of the Cypress Docker image can access it
-                command: sudo chown -R 1000:1000 ~/project  ~/.cache/Cypress
-            - run:
                 name: Run End to End tests
-                command: make end-to-end IO="--reporter mocha-junit-reporter"
-            - run:
-                name: Set back the project permissions so the CircleCI user so the test results and artefact can be used
-                command: sudo chown -R 1001:1002 ~/project
+                command: make end-to-end IO="--headless --reporter mocha-junit-reporter"
             - store_test_results:
                 path: tests/reports
             - store_artifacts:

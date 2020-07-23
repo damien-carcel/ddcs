@@ -2,6 +2,12 @@
 
 The advancement of the project can be followed [here](https://github.com/damien-carcel/ddcs/projects/1).
 
+## Requirements
+
+- Node >= 12
+- Yarn
+- Make
+
 ## How to use it?
 
 ```bash
