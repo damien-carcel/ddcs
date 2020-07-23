@@ -22,12 +22,11 @@ export default Vue.extend({
   },
   data: function () {
     return {
-      inputValue: this.$store.state.characterBaseInformation[this.identifier],
+      inputValue: this.$store.state.characterBaseInformation.get(this.identifier),
     };
   },
   watch: {
     inputValue(newInputValue: string): void {
-      localStorage.setItem('debug_from_the_component', 'it works');
       this.$store.commit('updateCharacterBaseInformation', {
         identifier: this.identifier,
         value: newInputValue,

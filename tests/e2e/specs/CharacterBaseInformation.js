@@ -3,8 +3,8 @@ describe("As a player, I can manage my character's base information", () => {
     cy.fixture('CharacterBaseInformation/empty.json').then((characterBaseInformationFixtures) => {
       cy.visit('/');
 
-      for (const fixture in characterBaseInformationFixtures) {
-        cy.get(`input[id="${fixture}"]`).should('have.value', characterBaseInformationFixtures[fixture]);
+      for (const specificData in characterBaseInformationFixtures) {
+        cy.get(`input[id="${specificData}"]`).should('have.value', characterBaseInformationFixtures[specificData]);
       }
     });
   });
@@ -15,18 +15,18 @@ describe("As a player, I can manage my character's base information", () => {
 
       cy.visit('/');
 
-      for (const fixture in characterBaseInformationFixtures) {
-        cy.get(`input[id="${fixture}"]`).should('have.value', characterBaseInformationFixtures[fixture]);
+      for (const specificData in characterBaseInformationFixtures) {
+        cy.get(`input[id="${specificData}"]`).should('have.value', characterBaseInformationFixtures[specificData]);
       }
     });
   });
 
-  it("I can save the character's base information", () => {
+  it("I can update the character's base information", () => {
     cy.fixture('CharacterBaseInformation/complete.json').then((characterBaseInformationFixtures) => {
       cy.visit('/');
 
-      for (const fixture in characterBaseInformationFixtures) {
-        cy.get(`input[id="${fixture}"]`).type(characterBaseInformationFixtures[fixture]);
+      for (const specificData in characterBaseInformationFixtures) {
+        cy.get(`input[id="${specificData}"]`).type(characterBaseInformationFixtures[specificData]);
       }
 
       cy.getLocalStorage('characterBaseInformation').should('equal', JSON.stringify(characterBaseInformationFixtures));

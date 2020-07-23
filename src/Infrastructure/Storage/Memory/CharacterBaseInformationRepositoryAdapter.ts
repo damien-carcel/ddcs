@@ -1,18 +1,25 @@
 import CharacterBaseInformationRepository from '@/Domain/CharacterBase/Repository/CharacterBaseInformationRepository';
-import { CharacterBaseInformation } from '@/Domain/CharacterBase/Types/CharacterBaseInformation';
+import {
+  CharacterBaseInformation,
+  CharacterBaseInformationData,
+} from '@/Domain/CharacterBase/Model/CharacterBaseInformation';
 
 export default class CharacterBaseInformationRepositoryAdapter implements CharacterBaseInformationRepository {
-  private characterBaseInformation: string | null;
+  private characterBaseInformationData: CharacterBaseInformationData | null;
 
-  constructor(characterBaseInformation: string | null = null) {
-    this.characterBaseInformation = characterBaseInformation;
+  constructor(characterBaseInformation: CharacterBaseInformationData | null = null) {
+    this.characterBaseInformationData = characterBaseInformation;
   }
 
-  get(): string | null {
-    return this.characterBaseInformation;
+  get(): CharacterBaseInformation | null {
+    if (null === this.characterBaseInformationData) {
+      return null;
+    }
+
+    return new CharacterBaseInformation(this.characterBaseInformationData);
   }
 
   save(characterBaseInformation: CharacterBaseInformation): void {
-    this.characterBaseInformation = JSON.stringify(characterBaseInformation);
+    this.characterBaseInformationData = characterBaseInformation.getData();
   }
 }

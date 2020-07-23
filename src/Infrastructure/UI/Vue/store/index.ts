@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { NewCharacterBaseValue } from '@/Domain/CharacterBase/Types/CharacterBaseInformation';
+import { NewCharacterBaseValue } from '@/Domain/CharacterBase/Model/CharacterBaseInformation';
 import CharacterBaseInformationService from '@/Application/CharacterBaseInformationService';
 import CharacterBaseInformationRepositoryAdapter from '@/Infrastructure/Storage/LocalStorage/CharacterBaseInformationRepositoryAdapter';
 
@@ -16,10 +16,7 @@ export default new Vuex.Store({
   },
   mutations: {
     updateCharacterBaseInformation(state, newCharacterBaseValue: NewCharacterBaseValue) {
-      localStorage.setItem('debug_from_the_store', 'it works');
-      state.characterBaseInformation[newCharacterBaseValue.identifier] = newCharacterBaseValue.value;
-
-      characterBaseInformationService.save(state.characterBaseInformation);
+      characterBaseInformationService.update(state.characterBaseInformation, newCharacterBaseValue);
     },
   },
   actions: {},

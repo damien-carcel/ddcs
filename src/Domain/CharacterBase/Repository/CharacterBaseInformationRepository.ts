@@ -1,6 +1,6 @@
-import { CharacterBaseInformation } from '@/Domain/CharacterBase/Types/CharacterBaseInformation';
+import { CharacterBaseInformation } from '@/Domain/CharacterBase/Model/CharacterBaseInformation';
 
 export default interface CharacterBaseInformationRepository {
-  get(): string | null;
+  get(): CharacterBaseInformation | null;
   save(characterBaseInformation: CharacterBaseInformation): void;
 }

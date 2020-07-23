@@ -1,5 +1,6 @@
 import characterBaseInformationFixtures from '../../../../fixtures/CharacterBaseInformation/complete.json';
 import CharacterBaseInformationRepositoryAdapter from '@/Infrastructure/Storage/LocalStorage/CharacterBaseInformationRepositoryAdapter';
+import { CharacterBaseInformation } from '@/Domain/CharacterBase/Model/CharacterBaseInformation';
 
 describe('Tests the local storage adapter of the character base information repository', () => {
   beforeEach(() => {
@@ -12,7 +13,7 @@ describe('Tests the local storage adapter of the character base information repo
     const repository = new CharacterBaseInformationRepositoryAdapter();
     const characterBaseInformation = repository.get();
 
-    expect(characterBaseInformation).toStrictEqual(JSON.stringify(characterBaseInformationFixtures));
+    expect(characterBaseInformation).toStrictEqual(new CharacterBaseInformation(characterBaseInformationFixtures));
   });
 
   it('gets nothing if the character sheet is new', () => {
@@ -23,9 +24,11 @@ describe('Tests the local storage adapter of the character base information repo
     expect(characterBaseInformation).toBeNull();
   });
 
-  it('saves the character base information', () => {
+  it('saves the character base information for the first time', () => {
+    const characterBaseInformation = new CharacterBaseInformation(characterBaseInformationFixtures);
+
     const repository = new CharacterBaseInformationRepositoryAdapter();
-    repository.save(characterBaseInformationFixtures);
+    repository.save(characterBaseInformation);
 
     expect(localStorage.getItem('characterBaseInformation')).toStrictEqual(
       JSON.stringify(characterBaseInformationFixtures)
@@ -45,9 +48,10 @@ describe('Tests the local storage adapter of the character base information repo
         hair: 'greyer',
       },
     };
+    const characterBaseInformation = new CharacterBaseInformation(updatedCharacterBaseInformation);
 
     const repository = new CharacterBaseInformationRepositoryAdapter();
-    repository.save(updatedCharacterBaseInformation);
+    repository.save(characterBaseInformation);
 
     expect(localStorage.getItem('characterBaseInformation')).toStrictEqual(
       JSON.stringify(updatedCharacterBaseInformation)

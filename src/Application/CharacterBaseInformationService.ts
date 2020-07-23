@@ -1,4 +1,4 @@
-import { CharacterBaseInformation } from '@/Domain/CharacterBase/Types/CharacterBaseInformation';
+import { CharacterBaseInformation, NewCharacterBaseValue } from '@/Domain/CharacterBase/Model/CharacterBaseInformation';
 import CharacterBaseInformationRepository from '@/Domain/CharacterBase/Repository/CharacterBaseInformationRepository';
 
 export default class CharacterBaseInformationService {
@@ -12,8 +12,8 @@ export default class CharacterBaseInformationService {
     const storedCharacterBaseInformation = this.repository.get();
 
     if (null === storedCharacterBaseInformation) {
-      // TODO: use a factory after writing acceptance tests and use select when needed
-      return {
+      // TODO: use a factory after writing acceptance tests and use value objects with "toString", and select when needed
+      return new CharacterBaseInformation({
         name: '',
         class: '',
         level: '',
@@ -29,13 +29,15 @@ export default class CharacterBaseInformationService {
         eyes: '',
         hair: '',
         skin: '',
-      };
+      });
     }
 
-    return JSON.parse(storedCharacterBaseInformation);
+    return storedCharacterBaseInformation;
   }
 
-  save(characterBaseInformation: CharacterBaseInformation): void {
+  update(characterBaseInformation: CharacterBaseInformation, newCharacterBaseValue: NewCharacterBaseValue): void {
+    characterBaseInformation.update(newCharacterBaseValue);
+
     this.repository.save(characterBaseInformation);
   }
 }
