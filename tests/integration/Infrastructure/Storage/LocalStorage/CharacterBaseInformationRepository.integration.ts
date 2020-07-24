@@ -41,10 +41,10 @@ describe('Tests the local storage adapter of the character base information repo
     const updatedCharacterBaseInformation = {
       ...characterBaseInformationFixtures,
       ...{
-        level: '2',
-        age: '39',
+        level: 2,
+        age: 39,
         divinity: 'still none',
-        weight: '100 kg',
+        weight: 100,
         hair: 'greyer',
       },
     };

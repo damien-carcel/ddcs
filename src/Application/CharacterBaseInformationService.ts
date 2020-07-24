@@ -12,20 +12,19 @@ export default class CharacterBaseInformationService {
     const storedCharacterBaseInformation = this.repository.get();
 
     if (null === storedCharacterBaseInformation) {
-      // TODO: use a factory after writing acceptance tests and use value objects with "toString", and select when needed
       return new CharacterBaseInformation({
         name: '',
         class: '',
-        level: '',
+        level: null,
         sizeCategory: '',
         size: '',
-        age: '',
+        age: null,
         sex: '',
         playerName: '',
         race: '',
         alignment: '',
         divinity: '',
-        weight: '',
+        weight: null,
         eyes: '',
         hair: '',
         skin: '',

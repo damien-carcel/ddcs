@@ -24,7 +24,7 @@ describe('Test the CharacterBaseInformationData model', () => {
   it('updates a specific character base information', () => {
     const characterBaseInformation = new CharacterBaseInformation(characterBaseInformationFixtures);
 
-    characterBaseInformation.update({ identifier: 'name', value: 'A new name' });
+    characterBaseInformation.update({ key: 'name', value: 'A new name' });
 
     expect(characterBaseInformation.get('name')).toStrictEqual('A new name');
   });

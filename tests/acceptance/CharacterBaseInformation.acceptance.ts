@@ -29,7 +29,7 @@ describe("As a player, I can manage my character's base information", () => {
     const inMemoryRepository = new CharacterBaseInformationRepositoryAdapter();
     const characterBaseInformationService = new CharacterBaseInformationService(inMemoryRepository);
 
-    characterBaseInformationService.update(characterBaseInformation, { identifier: 'name', value: 'My first name' });
+    characterBaseInformationService.update(characterBaseInformation, { key: 'name', value: 'My first name' });
 
     expect(inMemoryRepository.get()).toStrictEqual(
       new CharacterBaseInformation({
@@ -47,7 +47,7 @@ describe("As a player, I can manage my character's base information", () => {
     const inMemoryRepository = new CharacterBaseInformationRepositoryAdapter(characterBaseInformationFixtures);
     const characterBaseInformationService = new CharacterBaseInformationService(inMemoryRepository);
 
-    characterBaseInformationService.update(characterBaseInformation, { identifier: 'name', value: 'A new name' });
+    characterBaseInformationService.update(characterBaseInformation, { key: 'name', value: 'A new name' });
 
     expect(inMemoryRepository.get()).toStrictEqual(
       new CharacterBaseInformation({
