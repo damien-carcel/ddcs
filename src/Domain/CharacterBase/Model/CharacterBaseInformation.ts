@@ -32,8 +32,8 @@ class CharacterBaseInformation {
     return this.data;
   }
 
-  get(key: keyof CharacterBaseInformationData): string {
-    return this.data[key];
+  get(key: string): string {
+    return this.data[<keyof CharacterBaseInformationData>key];
   }
 
   update(data: NewCharacterBaseValue): void {
