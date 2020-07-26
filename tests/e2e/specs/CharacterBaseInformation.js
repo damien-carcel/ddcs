@@ -4,7 +4,12 @@ describe("As a player, I can manage my character's base information", () => {
       cy.visit('/');
 
       for (const specificData in characterBaseInformationFixtures) {
-        cy.get(`input[id="${specificData}"]`).should('have.value', characterBaseInformationFixtures[specificData]);
+        cy.get(`input[id="${specificData}"]`).should(
+          'have.value',
+          null === characterBaseInformationFixtures[specificData]
+            ? ''
+            : characterBaseInformationFixtures[specificData].toString()
+        );
       }
     });
   });
@@ -16,7 +21,10 @@ describe("As a player, I can manage my character's base information", () => {
       cy.visit('/');
 
       for (const specificData in characterBaseInformationFixtures) {
-        cy.get(`input[id="${specificData}"]`).should('have.value', characterBaseInformationFixtures[specificData]);
+        cy.get(`input[id="${specificData}"]`).should(
+          'have.value',
+          characterBaseInformationFixtures[specificData].toString()
+        );
       }
     });
   });
@@ -26,7 +34,7 @@ describe("As a player, I can manage my character's base information", () => {
       cy.visit('/');
 
       for (const specificData in characterBaseInformationFixtures) {
-        cy.get(`input[id="${specificData}"]`).type(characterBaseInformationFixtures[specificData]);
+        cy.get(`input[id="${specificData}"]`).clear().type(characterBaseInformationFixtures[specificData]);
       }
 
       cy.getLocalStorage('characterBaseInformation').should('equal', JSON.stringify(characterBaseInformationFixtures));

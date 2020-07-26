@@ -32,10 +32,10 @@ describe('Tests the "in memory" adapter of the character base information reposi
     const updatedCharacterBaseInformationFixtures = {
       ...characterBaseInformationFixtures,
       ...{
-        level: '2',
-        age: '39',
+        level: 2,
+        age: 39,
         divinity: 'still none',
-        weight: '100 kg',
+        weight: 100,
         hair: 'greyer',
       },
     };

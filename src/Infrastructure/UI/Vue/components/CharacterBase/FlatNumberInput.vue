@@ -2,10 +2,11 @@
   <div class="flex-auto mx-2 px-2">
     <input
       class="appearance-none border-b border-gray-800 w-full py-1"
-      type="text"
+      min="1"
+      type="number"
       :aria-label="label"
       :id="identifier"
-      v-model="inputValue"
+      v-model.number="inputValue"
     />
     <label class="text-sm text-gray-600" :for="identifier">{{ label }}</label>
   </div>
@@ -15,7 +16,7 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'FlatInput',
+  name: 'FlatNumberInput',
   props: {
     identifier: String,
     label: String,
@@ -26,9 +27,9 @@ export default Vue.extend({
     };
   },
   watch: {
-    inputValue(newInputValue: string): void {
+    inputValue(newInputValue: number): void {
       this.$store.commit('updateCharacterBaseInformation', {
-        identifier: this.identifier,
+        key: this.identifier,
         value: newInputValue,
       });
     },
